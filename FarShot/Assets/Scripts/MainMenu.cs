@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.Analytics;
 using UnityEngine;
 
 public class MainMenu : MonoBehaviour
@@ -26,6 +27,7 @@ public class MainMenu : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         AdManager.adManager.ShowBanner();
+        
     }
 
     // Update is called once per frame
@@ -35,7 +37,10 @@ public class MainMenu : MonoBehaviour
         bg.material.mainTextureOffset = offset;
 
     }
-   
+   public void bannerPressed()
+    {
+        Analytics.CustomEvent("Banner Ad Pressed");
+    }
 
     public void Mute()
     {

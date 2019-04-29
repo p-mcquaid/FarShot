@@ -8,6 +8,7 @@ using UnityEngine.Advertisements;
 
 
 
+
 public class AdManager : MonoBehaviour {
 
     public static AdManager adManager;
@@ -20,7 +21,7 @@ public class AdManager : MonoBehaviour {
     private float timer;
 
 
-    //BannerView bannerView;
+    //private BannerView bannerView;
     void Awake()
     {
         if (adManager != null)
@@ -37,7 +38,9 @@ public class AdManager : MonoBehaviour {
     void Start()
     {
         Advertisement.Initialize(store_ID, false);
-
+        //String appID = "ca-app-pub-1332738477775689~8702985637";
+        //MobileAds.Initialize(appID);
+        //this.ShowBanner();
     }
     
     void Update()
@@ -63,6 +66,8 @@ public class AdManager : MonoBehaviour {
         {
             var options = new ShowOptions { resultCallback = HandleShowResult };
             Advertisement.Show(video_ad, options);
+            Analytics.CustomEvent("Served Ad");
+
             timer = 150f;
         }
     }
@@ -73,7 +78,8 @@ public class AdManager : MonoBehaviour {
         {
             var options = new ShowOptions { resultCallback = HandleShowResult };
             Advertisement.Show(rewardedVideo_ad, options);
-            timer = 180f;
+            Analytics.CustomEvent("Served Rewarded Ad");
+
         }
     }
 
@@ -83,10 +89,27 @@ public class AdManager : MonoBehaviour {
         {
             var options = new ShowOptions { resultCallback = HandleShowResult };
             Advertisement.Show(banner_ad, options);
+            Analytics.CustomEvent("Served Banner Ad");
+
         }
+        //string adUnitID = "ca-app-pub-1332738477775689/2673242839";
+        //string adUnitID = "ca-app-pub-3940256099942544/6300978111";
+        //bannerView = new BannerView(adUnitID, AdSize.Banner, AdPosition.Bottom);
+        //AdRequest request = new AdRequest.Builder().Build();
+        //bannerView.LoadAd(request);
+    }
+
+    public void bannerClicked()
+    {
+        Analytics.CustomEvent("Banner Ad Clicked");
 
     }
 
+    public void IAP_Request()
+    {
+        Analytics.CustomEvent("Player requested to purchase skin");
+
+    }
 
     private void HandleShowResult(ShowResult result)
     {
@@ -97,10 +120,11 @@ public class AdManager : MonoBehaviour {
                 break;
             case ShowResult.Skipped:
                 Debug.Log("Ad was skipped");
+                //Analytics.CustomEvent("Ad Shown Skipped");
                 break;
             case ShowResult.Finished:
                 Debug.Log("Ad was shown successfully");
-                AnalyticsEvent.AdComplete(false);
+                //Analytics.CustomEvent("Ad Shown Successfully");
                 //Code for rewards
                 break;
             default:

@@ -147,6 +147,6 @@ public class GameManager : MonoBehaviour {
     }
     void OnApplicationQuit()
     {
-        AnalyticsEvent.GameOver("Game was quit");
+        Analytics.CustomEvent("Game was quit");
     }
 }
